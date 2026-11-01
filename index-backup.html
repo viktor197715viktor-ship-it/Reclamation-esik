@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEURALIX AI</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #090909;
+  color: white;
+}
+
+header {
+  padding: 22px;
+  border-bottom: 1px solid #292020;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: linear-gradient(135deg,#e32636,#ff5964);
+  display: grid;
+  place-items: center;
+  font-size: 23px;
+}
+
+h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+header small {
+  color: #b8a5a5;
+}
+
+main {
+  max-width: 650px;
+  margin: auto;
+  padding: 25px 18px 120px;
+}
+
+.welcome {
+  margin-top: 65px;
+  text-align: center;
+}
+
+.welcome h1 {
+  font-size: 32px;
+}
+
+.gradient {
+  background: linear-gradient(90deg,#e32636,#ff5964);
+  color: transparent;
+  background-clip: text;
+}
+
+.welcome p {
+  color: #b8a5a5;
+  line-height: 1.6;
+}
+
+.chat {
+  margin-top: 35px;
+}
+
+.message {
+  padding: 14px 17px;
+  border-radius: 17px;
+  margin: 12px 0;
+  line-height: 1.5;
+  max-width: 90%;
+  white-space: pre-wrap;
+}
+
+.bot {
+  background: #1b1112;
+  border: 1px solid #3b2023;
+}
+
+.user {
+  background: linear-gradient(120deg,#b91c2c,#e32636);
+  margin-left: auto;
+}
+
+.input-area {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 15px;
+  background: #090909;
+  border-top: 1px solid #292020;
+}
+
+.input-box {
+  max-width: 650px;
+  margin: auto;
+  display: flex;
+  gap: 10px;
+}
+
+input {
+  flex: 1;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid #49252a;
+  background: #1b1112;
+  border-radius: 15px;
+  color: white;
+  outline: none;
+}
+
+button {
+  border: none;
+  border-radius: 15px;
+  padding: 0 20px;
+  color: white;
+  background: linear-gradient(135deg,#c91f32,#ff4655);
+  font-size: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">✦</div>
+  <div>
+    <h2>NEURALIX</h2>
+    <small>Artificial Intelligence</small>
+  </div>
+</header>
+
+<main>
+  <div class="welcome" id="welcome">
+    <h1>Привет! Я <span class="gradient">NEURALIX</span></h1>
+    <p>Твой интеллектуальный помощник.<br>
+    Чем могу помочь сегодня?</p>
+  </div>
+
+  <div class="chat" id="chat"></div>
+</main>
+
+<div class="input-area">
+  <div class="input-box">
+    <input id="message" placeholder="Напиши сообщение...">
+    <button onclick="sendMessage()">➤</button>
+  </div>
+</div>
+
+<script>
+function sendMessage() {
+  const input = document.getElementById("message");
+  const chat = document.getElementById("chat");
+  const welcome = document.getElementById("welcome");
+
+  const value = input.value.trim();
+  if (!value) return;
+
+  welcome.style.display = "none";
+
+  const user = document.createElement("div");
+  user.className = "message user";
+  user.textContent = value;
+  chat.appendChild(user);
+
+  input.value = "";
+
+  const bot = document.createElement("div");
+  bot.className = "message bot";
+  bot.textContent =
+    "Это демонстрационная версия NEURALIX. Настоящий ИИ подключим следующим этапом!";
+  chat.appendChild(bot);
+
+  window.scrollTo(0, document.body.scrollHeight);
+}
+
+document.getElementById("message")
+.addEventListener("keydown", function(e) {
+  if (e.key === "Enter") sendMessage();
+});
+</script>
+
+</body>
+</html>
+

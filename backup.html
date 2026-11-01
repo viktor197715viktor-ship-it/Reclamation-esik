@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101010">
+<title>Реклама Есык</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101010;color:#fff;font-family:Arial,sans-serif;padding-bottom:85px}
+header{background:#191919;padding:17px;border-bottom:1px solid #333}
+header h1{margin:0;font-size:25px}
+header h1 span{color:#ed2939}
+header p{margin:5px 0 0;color:#aaa;font-size:13px}
+main{max-width:900px;margin:auto;padding:14px}
+.page{display:none}
+.page.active{display:block}
+input,textarea,select{width:100%;padding:12px;margin:7px 0 13px;border:1px solid #444;border-radius:9px;background:#202020;color:white;font-size:15px}
+textarea{min-height:80px}
+button{background:#ed2939;color:white;border:0;border-radius:9px;padding:12px;font-weight:bold}
+button.secondary{background:#333}
+.search{margin:15px 0}
+.categories{display:flex;gap:9px;overflow-x:auto;padding:5px 0 15px}
+.category{min-width:85px;padding:12px 7px;text-align:center;background:#202020;border:1px solid #333;border-radius:12px;font-size:12px}
+.category b{display:block;font-size:25px;margin-bottom:7px}
+.category.selected{border-color:#ed2939}
+.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.product,.card{background:#1c1c22;border:1px solid #333;border-radius:12px;overflow:hidden}
+.product img{width:100%;height:145px;object-fit:cover;background:#292929}
+.product-info{padding:10px}
+.product h3{font-size:14px;line-height:1.3;margin:0 0 8px}
+.price{color:#ff4b59;font-size:18px;font-weight:bold}
+.muted{color:#aaa;font-size:12px}
+.product button{width:100%;margin-top:9px;font-size:12px;padding:9px}
+.card{padding:14px;margin:12px 0}
+.card img{width:100%;max-height:220px;object-fit:cover}
+h2{font-size:21px}
+h3{margin-top:8px}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#191919;border-top:1px solid #444;display:grid;grid-template-columns:repeat(4,1fr);padding:8px 3px calc(8px + env(safe-area-inset-bottom));z-index:5}
+.bottom button{background:none;color:#aaa;font-size:11px;padding:7px 2px}
+.bottom button.active{color:#ff4b59}
+.bottom span{display:block;font-size:21px;margin-bottom:4px}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
+.actions button{flex:1}
+.empty{text-align:center;color:#aaa;padding:25px}
+@media(min-width:650px){.products{grid-template-columns:repeat(3,minmax(0,1fr))}.product img{height:190px}}
+</style>
+</head>
+<body>
+
+<header>
+<h1>📢 Реклама <span>Есык</span></h1>
+<p>Объявления твоего города</p>
+</header>
+
+<main>
+
+<section id="home" class="page active">
+<input class="search" id="search" placeholder="⌕ Поиск товаров..." oninput="renderAds()">
+
+<div class="categories">
+<div class="category selected" onclick="chooseCategory('',this)"><b>🔥</b>Все</div>
+<div class="category" onclick="chooseCategory('Телефоны',this)"><b>📱</b>Телефоны</div>
+<div class="category" onclick="chooseCategory('Техника',this)"><b>💻</b>Техника</div>
+<div class="category" onclick="chooseCategory('Авто',this)"><b>🚗</b>Авто</div>
+<div class="category" onclick="chooseCategory('Недвижимость',this)"><b>🏠</b>Недвижимость</div>
+<div class="category" onclick="chooseCategory('Одежда',this)"><b>👕</b>Одежда</div>
+<div class="category" onclick="chooseCategory('Услуги',this)"><b>🛠️</b>Услуги</div>
+<div class="category" onclick="chooseCategory('Другое',this)"><b>•••</b>Другое</div>
+</div>
+
+<h2>🔥 Популярные объявления</h2>
+<div class="products" id="ads"></div>
+</section>
+
+<section id="add" class="page">
+<h2>＋ Добавить товар</h2>
+<div class="card">
+<label>Название</label>
+<input id="title" placeholder="Название товара">
+<label>Цена в тенге</label>
+<input id="price" type="number" min="1" placeholder="Цена">
+<label>Категория</label>
+<select id="newCategory">
+<option>Телефоны</option><option>Техника</option>
+<option>Авто</option><option>Недвижимость</option>
+<option>Одежда</option><option>Услуги</option><option>Другое</option>
+</select>
+<label>Описание</label>
+<textarea id="description" placeholder="Описание товара"></textarea>
+<label>Фотография</label>
+<input id="photo" type="file" accept="image/*">
+<button onclick="addAd()" style="width:100%">Опубликовать</button>
+<p class="muted">Объявление сначала попадёт на модерацию.</p>
+</div>
+</section>
+
+<section id="cabinet" class="page">
+<h2>💼 Кабинет продавца</h2>
+<div id="sellerInfo"></div>
+<h3>Мои объявления</h3>
+<div id="myAds"></div>
+</section>
+
+<section id="account" class="page">
+<h2>👤 Аккаунт</h2>
+<div id="auth">
+<div class="card">
+<h3>Регистрация</h3>
+<input id="regName" placeholder="Имя пользователя">
+<input id="regPass" type="password" placeholder="Пароль">
+<select id="regRole">
+<option value="buyer">Покупатель</option>
+<option value="seller">Продавец</option>
+</select>
+<input id="regPhone" placeholder="WhatsApp, например 77001234567">
+<textarea id="regBio" placeholder="Описание продавца"></textarea>
+<button onclick="register()" style="width:100%">Зарегистрироваться</button>
+</div>
+<div class="card">
+<h3>Вход</h3>
+<input id="loginName" placeholder="Имя пользователя">
+<input id="loginPass" type="password" placeholder="Пароль">
+<button onclick="login()" style="width:100%">Войти</button>
+</div>
+<div class="card">
+<p>Тестовый администратор:</p>
+<p>Логин: admin</p>
+<p>Пароль: admin123</p>
+</div>
+</div>
+<div id="profile"></div>
+</section>
+
+<section id="moderation" class="page">
+<h2>🛡️ Модерация</h2>
+<h3>Объявления на проверке</h3>
+<div id="pendingAds"></div>
+<h3>Жалобы</h3>
+<div id="moderationContent"></div>
+</section>
+
+</main>
+
+<div class="bottom">
+<button class="active" onclick="openPage('home',this)"><span>⌂</span>Главная</button>
+<button onclick="openPage('add',this)"><span>＋</span>Добавить</button>
+<button onclick="openPage('cabinet',this)"><span>▣</span>Кабинет</button>
+<button onclick="openPage('account',this)"><span>●</span>Профиль</button>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+
+let users=JSON.parse(localStorage.getItem('re_users')||'[]');
+let ads=JSON.parse(localStorage.getItem('re_ads')||'[]');
+let reports=JSON.parse(localStorage.getItem('re_reports')||'[]');
+let current=JSON.parse(localStorage.getItem('re_current')||'null');
+let selectedCategory='';
+
+function save(){
+ localStorage.setItem('re_users',JSON.stringify(users));
+ localStorage.setItem('re_ads',JSON.stringify(ads));
+ localStorage.setItem('re_reports',JSON.stringify(reports));
+ localStorage.setItem('re_current',JSON.stringify(current));
+}
+
+function safe(value){
+ return String(value??'').replace(/[&<>"']/g,c=>({
+ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+ })[c]);
+}
+
+function openPage(id,button){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ $(id).classList.add('active');
+ document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('active'));
+ if(button)button.classList.add('active');
+ if(id==='home')renderAds();
+ if(id==='cabinet')renderSeller();
+ if(id==='account')renderAccount();
+ if(id==='moderation')renderModeration();
+}
+
+function chooseCategory(category,element){
+ selectedCategory=category;
+ document.querySelectorAll('.category').forEach(c=>c.classList.remove('selected'));
+ element.classList.add('selected');
+ renderAds();
+}
+
+function register(){
+ const name=$('regName').value.trim();
+ const pass=$('regPass').value;
+ if(!name||!pass)return alert('Заполни имя и пароль');
+ if(pass.length<6)return alert('Пароль должен содержать минимум 6 символов');
+ if(users.some(u=>u.name.toLowerCase()===name.toLowerCase()))
+ return alert('Такой пользователь уже существует');
+
+ const user={
+ id:Date.now(),name,pass,role:$('regRole').value,
+ phone:$('regPhone').value.trim(),bio:$('regBio').value.trim()
+ };
+ users.push(user);
+ current=user;
+ save();
+ renderAccount();
+ alert('Регистрация успешна!');
+}
+
+function login(){
+ const name=$('loginName').value.trim();
+ const pass=$('loginPass').value;
+ let user=users.find(u=>u.name===name&&u.pass===pass);
+ if(!user&&name==='admin'&&pass==='admin123'){
+ user={id:0,name:'Администратор',role:'admin'};
+ }
+ if(!user)return alert('Неверный логин или пароль');
+ current=user;
+ save();
+ renderAccount();
+ alert('Вход выполнен!');
+}
+
+function logout(){
+ current=null;
+ save();
+ renderAccount();
+}
+
+function renderAccount(){
+ $('auth').style.display=current?'none':'block';
+ $('profile').innerHTML=current?`
+ <div class="card">
+ <h3>${safe(current.name)}</h3>
+ <p>Роль: ${safe(current.role)}</p>
+ <p>${safe(current.bio||'')}</p>
+ <button onclick="logout()">Выйти</button>
+ </div>`:'';
+}
+
+function addAd(){
+ if(!current)return alert('Сначала войди в аккаунт');
+ if(current.role!=='seller')return alert('Нужен аккаунт продавца');
+
+ const title=$('title').value.trim();
+ const price=Number($('price').value);
+ const description=$('description').value.trim();
+ const file=$('photo').files[0];
+
+ if(!title||!price||price<1)return alert('Укажи название и цену');
+ if(file&&file.size>2*1024*1024)return alert('Фото должно быть меньше 2 МБ');
+
+ function publish(photo){
+ ads.unshift({
+ id:Date.now(),owner:current.id,seller:current.name,
+ title,price,description,photo,
+ category:$('newCategory').value,approved:false
+ });
+ save();
+ $('title').value='';
+ $('price').value='';
+ $('description').value='';
+ $('photo').value='';
+ alert('Объявление отправлено на проверку');
+ openPage('cabinet');
+ }
+
+ if(file){
+ const reader=new FileReader();
+ reader.onload=()=>publish(reader.result);
+ reader.readAsDataURL(file);
+ }else publish('');
+}
+
+function renderAds(){
+ const query=$('search').value.toLowerCase();
+ const list=ads.filter(a=>a.approved===true)
+ .filter(a=>(a.title+' '+a.description).toLowerCase().includes(query))
+ .filter(a=>!selectedCategory||a.category===selectedCategory);
+
+ $('ads').innerHTML=list.length?list.map(a=>`
+ <article class="product">
+ ${a.photo?`<img src="${a.photo}" alt="Фото товара">`:'<div style="height:145px;display:grid;place-items:center;font-size:40px">📦</div>'}
+ <div class="product-info">
+ <h3>${safe(a.title)}</h3>
+ <div class="price">${Number(a.price).toLocaleString('ru-RU')} ₸</div>
+ <p class="muted">${safe(a.category)}</p>
+ <p class="muted">Продавец: ${safe(a.seller)}</p>
+ <button onclick="sellerProfile(${a.owner})">Профиль продавца</button>
+ <button class="secondary" onclick="complain(${a.id})">Пожаловаться</button>
+ </div>
+ </article>`).join(''):'<div class="empty">Объявлений пока нет</div>';
+}
+
+function renderSeller(){
+ if(!current){
+ $('sellerInfo').innerHTML='<p>Войди в аккаунт.</p>';
+ $('myAds').innerHTML='';
+ return;
+ }
+ $('sellerInfo').innerHTML=`<p>Пользователь: ${safe(current.name)}</p>`;
+ const mine=ads.filter(a=>a.owner===current.id);
+ $('myAds').innerHTML=mine.length?mine.map(a=>`
+ <div class="card">
+ <b>${safe(a.title)}</b>
+ <p>${Number(a.price).toLocaleString('ru-RU')} ₸</p>
+ <p class="muted">Статус: ${a.approved?'Опубликовано':'На проверке'}</p>
+ <button onclick="deleteAd(${a.id})">Удалить</button>
+ </div>`).join(''):'<p>У тебя пока нет объявлений.</p>';
+}
+
+function deleteAd(id){
+ if(!confirm('Удалить объявление?'))return;
+ ads=ads.filter(a=>a.id!==id);
+ save();
+ renderSeller();
+ renderAds();
+}
+
+function sellerProfile(id){
+ const seller=users.find(u=>u.id===id);
+ if(!seller)return alert('Профиль не найден');
+ let message='Продавец: '+seller.name+'\n'+(seller.bio||'');
+ const phone=(seller.phone||'').replace(/\D/g,'');
+ if(phone&&confirm(message+'\nОткрыть WhatsApp?')){
+ window.open('https://wa.me/'+phone,'_blank');
+ }else if(!phone)alert(message+'\nНомер WhatsApp не указан.');
+}
+
+function complain(id){
+ if(!current)return alert('Войди, чтобы отправить жалобу');
+ const reason=prompt('Укажи причину жалобы');
+ if(!reason||!reason.trim())return;
+ reports.push({
+ id:Date.now(),adId:id,from:current.name,
+ reason:reason.trim(),status:'Новая'
+ });
+ save();
+ alert('Жалоба отправлена');
+}
+
+function renderModeration(){
+ if(!current||current.role!=='admin'){
+ $('pendingAds').innerHTML='<p>Доступ только для администратора.</p>';
+ $('moderationContent').innerHTML='';
+ return;
+ }
+
+ const pending=ads.filter(a=>!a.approved);
+ $('pendingAds').innerHTML=pending.length?pending.map(a=>`
+ <div class="card">
+ <h3>${safe(a.title)}</h3>
+ <p>${safe(a.seller)} · ${Number(a.price).toLocaleString('ru-RU')} ₸</p>
+ ${a.photo?`<img src="${a.photo}">`:''}
+ <p>${safe(a.description)}</p>
+ <button onclick="approveAd(${a.id})">Одобрить</button>
+ <button class="secondary" onclick="rejectAd(${a.id})">Отклонить</button>
+ </div>`).join(''):'<p>Нет объявлений на проверке.</p>';
+
+ $('moderationContent').innerHTML=reports.length?reports.map(r=>`
+ <div class="card">
+ <b>Жалоба №${r.id}</b>
+ <p>От: ${safe(r.from)}</p>
+ <p>Причина: ${safe(r.reason)}</p>
+ <button onclick="removeReport(${r.id})">Закрыть жалобу</button>
+ </div>`).join(''):'<p>Жалоб нет.</p>';
+}
+
+function approveAd(id){
+ const ad=ads.find(a=>a.id===id);
+ if(ad){ad.approved=true;save();renderModeration();}
+}
+
+function rejectAd(id){
+ ads=ads.filter(a=>a.id!==id);
+ save();
+ renderModeration();
+}
+
+function removeReport(id){
+ reports=reports.filter(r=>r.id!==id);
+ save();
+ renderModeration();
+}
+
+function init(){
+ renderAds();
+ renderAccount();
+ renderSeller();
+ renderModeration();
+}
+
+init();
+</script>
+</body>
+</html>

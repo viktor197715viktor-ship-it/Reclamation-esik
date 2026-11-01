@@ -2,196 +2,898 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NEURALIX AI</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Реклама Есык</title>
 <style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #090b14;
-  color: white;
-}
-
-header {
-  padding: 22px;
-  border-bottom: 1px solid #25283a;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.logo {
-  width: 42px;
-  height: 42px;
-  border-radius: 14px;
-  background: linear-gradient(135deg,#7455ff,#00c8ff);
-  display: grid;
-  place-items: center;
-  font-size: 23px;
-}
-
-h2 {
-  margin: 0;
-  font-size: 20px;
-}
-
-header small {
-  color: #9298b3;
-}
-
-main {
-  max-width: 650px;
-  margin: auto;
-  padding: 25px 18px 120px;
-}
-
-.welcome {
-  margin-top: 65px;
-  text-align: center;
-}
-
-.welcome h1 {
-  font-size: 32px;
-}
-
-.gradient {
-  background: linear-gradient(90deg,#8c6cff,#00d5ff);
-  color: transparent;
-  background-clip: text;
-}
-
-.welcome p {
-  color: #9298b3;
-  line-height: 1.6;
-}
-
-.chat {
-  margin-top: 35px;
-}
-
-.message {
-  padding: 14px 17px;
-  border-radius: 17px;
-  margin: 12px 0;
-  line-height: 1.5;
-  max-width: 90%;
-  white-space: pre-wrap;
-}
-
-.bot {
-  background: #191d30;
-  border: 1px solid #292e46;
-}
-
-.user {
-  background: linear-gradient(120deg,#6547d9,#3567d9);
-  margin-left: auto;
-}
-
-.input-area {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 15px;
-  background: #090b14;
-  border-top: 1px solid #25283a;
-}
-
-.input-box {
-  max-width: 650px;
-  margin: auto;
-  display: flex;
-  gap: 10px;
-}
-
-input {
-  flex: 1;
-  min-width: 0;
-  padding: 16px;
-  border: 1px solid #30364d;
-  background: #191d30;
-  border-radius: 15px;
-  color: white;
-  outline: none;
-}
-
-button {
-  border: none;
-  border-radius: 15px;
-  padding: 0 20px;
-  color: white;
-  background: linear-gradient(135deg,#7956ff,#258bff);
-  font-size: 20px;
-}
+*{box-sizing:border-box}
+body{margin:0;background:#f5f4f7;color:#24212a;font-family:Arial;padding-bottom:80px}
+header{background:linear-gradient(110deg,#71109b,#a52ac0);color:white;padding:17px}
+.top{display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:23px;font-weight:bold}
+.city{background:#ffffff22;padding:9px;border-radius:20px}
+.search{display:flex;background:white;border-radius:12px;margin-top:15px;padding:0 12px}
+.search input{border:0;outline:0;width:100%;padding:14px;color:#222}
+main{max-width:850px;margin:auto;padding:14px}
+.page{display:none}
+.page.active{display:block}
+h2{font-size:20px}
+.categories{display:flex;gap:9px;overflow-x:auto;padding:5px 0 12px}
+.cat{min-width:78px;background:white;border-radius:13px;padding:12px 7px;text-align:center;font-size:12px;border:1px solid #eee}
+.cat b{display:block;font-size:24px;margin-bottom:6px}
+.cat.selected{border:2px solid #9515ad;color:#86149e}
+.banner{background:linear-gradient(110deg,#8b16a9,#c44bd0);border-radius:16px;padding:17px;color:white;margin:12px 0}
+.banner h2{margin:0 0 7px}
+.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.product{background:white;border-radius:13px;overflow:hidden;position:relative}
+.product img{width:100%;height:145px;object-fit:cover;background:#eee}
+.product-info{padding:10px}
+.product h3{font-size:14px;margin:0 0 7px}
+.price{font-size:19px;font-weight:bold;color:#86149e;margin:7px 0}
+.muted{font-size:12px;color:#888}
+button{border:0;background:#9415aa;color:white;padding:12px;border-radius:10px;font-weight:bold}
+.product button{width:100%;margin-top:8px}
+.heart{position:absolute;right:8px;top:8px;background:white;color:#8b16a9;border-radius:50%;font-size:20px;width:35px;height:35px;padding:0}
+input,textarea,select{width:100%;padding:13px;margin:7px 0 13px;border:1px solid #e0dce4;border-radius:10px;background:white;color:#222}
+textarea{min-height:80px}
+.card{background:white;border-radius:14px;padding:15px;margin:12px 0}
+.secondary{background:#eee;color:#5e3768}
+.danger{background:#d93650}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #eee;display:grid;grid-template-columns:repeat(4,1fr);padding:7px 3px calc(7px + env(safe-area-inset-bottom))}
+.bottom button{background:transparent;color:#777;font-size:11px;padding:5px}
+.bottom button span{display:block;font-size:22px;margin-bottom:4px}
+.bottom button.active{color:#9415aa}
+.avatar{width:78px;height:78px;border-radius:50%;object-fit:cover;background:#eee}
+.row{display:flex;align-items:center;gap:12px}
+.empty{text-align:center;color:#888;padding:30px}
+.badge{background:#f1e5f5;color:#8b16a9;padding:5px 8px;border-radius:7px;font-size:11px}
+.hidden{display:none!important}
+hr{border:0;border-top:1px solid #eee}
+@media(min-width:650px){.products{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 </head>
-
 <body>
-
 <header>
-  <div class="logo">✦</div>
-  <div>
-    <h2>NEURALIX</h2>
-    <small>Artificial Intelligence</small>
-  </div>
+ <div class="top">
+  <div class="logo">Реклама Есык</div>
+  <div class="city">📍 Есык</div>
+ </div>
+ <div class="search">
+  <span>⌕</span>
+  <input id="search" placeholder="Найти товар или услугу..." oninput="renderAds()">
+ </div>
 </header>
-
 <main>
-  <div class="welcome" id="welcome">
-    <h1>Привет! Я <span class="gradient">NEURALIX</span></h1>
-    <p>Твой интеллектуальный помощник.<br>
-    Чем могу помочь сегодня?</p>
+<section id="home" class="page active">
+ <div class="banner">
+  <h2>Покупай и продавай в Есыке!</h2>
+  <p>Находи нужные товары рядом с собой</p>
+ </div>
+ <div class="categories">
+  <div class="cat selected" onclick="chooseCategory('Все',this)"><b>🔥</b>Все</div>
+  <div class="cat" onclick="chooseCategory('Телефоны',this)"><b>📱</b>Телефоны</div>
+  <div class="cat" onclick="chooseCategory('Техника',this)"><b>💻</b>Техника</div>
+  <div class="cat" onclick="chooseCategory('Авто',this)"><b>🚗</b>Авто</div>
+  <div class="cat" onclick="chooseCategory('Недвижимость',this)"><b>🏠</b>Дом</div>
+  <div class="cat" onclick="chooseCategory('Одежда',this)"><b>👕</b>Одежда</div>
+  <div class="cat" onclick="chooseCategory('Услуги',this)"><b>🛠️</b>Услуги</div>
+  <div class="cat" onclick="chooseCategory('Другое',this)"><b>📦</b>Другое</div>
+ </div>
+ <h2>Популярные объявления</h2>
+ <div id="ads" class="products"></div>
+</section>
+<!-- ИЗБРАННОЕ -->
+<section class="page" id="favorites">
+  <h2>Избранное</h2>
+  <p class="muted">Объявления, которые ты сохранил.</p>
+  <div id="favoriteAds" class="products"></div>
+</section>
+
+<!-- ДОБАВЛЕНИЕ ОБЪЯВЛЕНИЯ -->
+<section class="page" id="add">
+  <h2>Новое объявление</h2>
+  <div id="addNotice" class="card muted">
+    Войди в аккаунт продавца, чтобы разместить объявление.
   </div>
 
-  <div class="chat" id="chat"></div>
+  <form id="adForm" class="card hidden" onsubmit="addAd(event)">
+    <label>Название товара</label>
+    <input id="adTitle" type="text" placeholder="Например, Samsung A54" required maxlength="70">
+
+    <label>Цена в тенге</label>
+    <input id="adPrice" type="number" placeholder="Например, 50000" min="0" required>
+
+    <label>Категория</label>
+    <select id="adCategory" required>
+      <option value="Телефоны">Телефоны</option>
+      <option value="Техника">Техника</option>
+      <option value="Авто">Авто</option>
+      <option value="Недвижимость">Недвижимость</option>
+      <option value="Одежда">Одежда</option>
+      <option value="Услуги">Услуги</option>
+      <option value="Другое">Другое</option>
+    </select>
+
+    <label>Описание</label>
+    <textarea id="adDescription" placeholder="Расскажи о товаре..." required maxlength="1000"></textarea>
+
+    <label>Фотография</label>
+    <input id="adPhoto" type="file" accept="image/*" required>
+
+    <button type="submit">Отправить на модерацию</button>
+    <p class="muted">Объявление появится после проверки администратором.</p>
+  </form>
+</section>
+
+<!-- ПРОФИЛЬ -->
+<section class="page" id="profile">
+  <h2>Профиль</h2>
+
+  <div id="authForms">
+    <div class="card">
+      <h3>Регистрация</h3>
+      <form onsubmit="register(event)">
+        <label>Имя пользователя</label>
+        <input id="regName" placeholder="Придумай имя" required maxlength="25">
+
+        <label>Номер WhatsApp</label>
+        <input id="regPhone" type="tel" placeholder="77001234567" required>
+
+        <label>Пароль</label>
+        <input id="regPassword" type="password" placeholder="Придумай пароль" required minlength="4">
+
+        <label>Тип аккаунта</label>
+        <select id="regRole">
+          <option value="buyer">Покупатель</option>
+          <option value="seller">Продавец</option>
+        </select>
+
+        <button type="submit">Зарегистрироваться</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h3>Вход</h3>
+      <form onsubmit="login(event)">
+        <label>Имя пользователя</label>
+        <input id="loginName" required>
+
+        <label>Пароль</label>
+        <input id="loginPassword" type="password" required>
+
+        <button type="submit">Войти</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ДАННЫЕ АККАУНТА -->
+  <div id="userProfile" class="hidden">
+    <div class="card">
+      <div class="row">
+        <img id="avatarPreview" class="avatar" src="" alt="Аватар">
+        <div>
+          <h3 id="profileName"></h3>
+          <span id="profileRole" class="badge"></span>
+          <p id="profileCity" class="muted"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Редактировать профиль</h3>
+      <form onsubmit="saveProfile(event)">
+        <label>Имя</label>
+        <input id="editName" required maxlength="25">
+
+        <label>Город</label>
+        <input id="editCity" value="Есык" required maxlength="40">
+
+        <label>WhatsApp</label>
+        <input id="editPhone" type="tel" required>
+
+        <label>О себе</label>
+        <textarea id="editBio" maxlength="300" placeholder="Расскажи о себе"></textarea>
+
+        <label>Аватар</label>
+        <input id="editAvatar" type="file" accept="image/*">
+
+        <button type="submit">Сохранить изменения</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h3>Мои объявления</h3>
+      <div id="myAds"></div>
+    </div>
+
+    <div id="adminPanel" class="card hidden">
+      <h3>Панель модерации</h3>
+      <div id="moderation"></div>
+    </div>
+
+    <button onclick="logout()">Выйти из аккаунта</button>
+  </div>
+</section>
+
+<!-- ПРОФИЛЬ ПРОДАВЦА -->
+<section class="page" id="sellerPage">
+  <button onclick="openPage('home')">← Назад</button>
+  <div id="sellerInfo"></div>
+</section>
+
 </main>
 
-<div class="input-area">
-  <div class="input-box">
-    <input id="message" placeholder="Напиши сообщение...">
-    <button onclick="sendMessage()">➤</button>
-  </div>
-</div>
-
+<!-- НИЖНЕЕ МЕНЮ -->
+<nav class="bottom">
+  <button id="nav-home" onclick="openPage('home')">🏠 Главная</button>
+  <button id="nav-favorites" onclick="openPage('favorites')">♥ Избранное</button>
+  <button id="nav-add" onclick="openPage('add')">＋ Добавить</button>
+  <button id="nav-profile" onclick="openPage('profile')">👤 Профиль</button>
+</nav>
 <script>
-function sendMessage() {
-  const input = document.getElementById("message");
-  const chat = document.getElementById("chat");
-  const welcome = document.getElementById("welcome");
+const readData = (key, fallback) => {
+  try {
+    return JSON.parse(localStorage.getItem(key)) || fallback;
+  } catch {
+    return fallback;
+  }
+};
 
-  const value = input.value.trim();
-  if (!value) return;
+let users = readData("re_users", []);
+let ads = readData("re_ads", []);
+let favorites = readData("re_favorites", []);
+let reports = readData("re_reports", []);
+let current = localStorage.getItem("re_current") || "";
+let category = "Все";
 
-  welcome.style.display = "none";
-
-  const user = document.createElement("div");
-  user.className = "message user";
-  user.textContent = value;
-  chat.appendChild(user);
-
-  input.value = "";
-
-  const bot = document.createElement("div");
-  bot.className = "message bot";
-  bot.textContent =
-    "Это демонстрационная версия NEURALIX. Настоящий ИИ подключим следующим этапом!";
-  chat.appendChild(bot);
-
-  window.scrollTo(0, document.body.scrollHeight);
+function saveData() {
+  localStorage.setItem("re_users", JSON.stringify(users));
+  localStorage.setItem("re_ads", JSON.stringify(ads));
+  localStorage.setItem("re_favorites", JSON.stringify(favorites));
+  localStorage.setItem("re_reports", JSON.stringify(reports));
+  localStorage.setItem("re_current", current);
 }
 
-document.getElementById("message")
-.addEventListener("keydown", function(e) {
-  if (e.key === "Enter") sendMessage();
-});
-</script>
+function safe(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
 
+function me() {
+  return users.find(user => user.name === current) || null;
+}
+
+function makeId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
+function openPage(id) {
+  if (id === "add") {
+    const user = me();
+    if (!user) {
+      alert("Сначала войди в аккаунт.");
+      id = "profile";
+    } else if (user.role !== "seller" && user.role !== "admin") {
+      alert("Размещать объявления могут только продавцы.");
+      id = "profile";
+    }
+  }
+
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.remove("active");
+  });
+
+  const page = document.getElementById(id);
+  if (page) page.classList.add("active");
+
+  document.querySelectorAll(".bottom button").forEach(button => {
+    button.classList.remove("selected");
+  });
+
+  const nav = document.getElementById("nav-" + id);
+  if (nav) nav.classList.add("selected");
+
+  if (id === "favorites") renderFavorites();
+  if (id === "profile") renderProfile();
+  if (id === "add") updateAddForm();
+}
+
+function chooseCategory(value, element) {
+  category = value;
+
+  document.querySelectorAll(".cat").forEach(item => {
+    item.classList.remove("selected");
+  });
+
+  if (element) element.classList.add("selected");
+  renderAds();
+}
+
+function renderAds() {
+  const container = document.getElementById("ads");
+  if (!container) return;
+
+  const search = (
+    document.getElementById("search")?.value || ""
+  ).toLowerCase().trim();
+
+  const visible = ads.filter(ad => {
+    const approved = ad.status === "approved";
+    const matchesCategory =
+      category === "Все" || ad.category === category;
+
+    const matchesSearch =
+      (ad.title || "").toLowerCase().includes(search) ||
+      (ad.description || "").toLowerCase().includes(search);
+
+    return approved && matchesCategory && matchesSearch;
+  });
+
+  if (!visible.length) {
+    container.innerHTML =
+      '<p class="empty">Объявлений пока нет.</p>';
+    return;
+  }
+
+  container.innerHTML = visible.map(ad => `
+    <article class="product">
+      <img src="${safe(ad.photo)}" alt="Фото товара">
+      <div class="product-info">
+        <button class="heart" onclick="toggleFavorite('${safe(ad.id)}')">
+          ${favorites.includes(ad.id) ? "♥" : "♡"}
+        </button>
+        <div class="price">${Number(ad.price).toLocaleString("ru-RU")} ₸</div>
+        <b>${safe(ad.title)}</b>
+        <p class="muted">${safe(ad.city || "Есык")}</p>
+        <p class="muted">${safe(ad.category)}</p>
+        <button onclick="sellerProfile('${safe(ad.seller)}')">
+          Продавец
+        </button>
+        <button onclick="complain('${safe(ad.id)}')">
+          Пожаловаться
+        </button>
+      </div>
+    </article>
+  `).join("");
+}
+
+function toggleFavorite(id) {
+  if (favorites.includes(id)) {
+    favorites = favorites.filter(item => item !== id);
+  } else {
+    favorites.push(id);
+  }
+
+  saveData();
+  renderAds();
+  renderFavorites();
+}
+
+function renderFavorites() {
+  const container = document.getElementById("favoriteAds");
+  if (!container) return;
+
+  const list = ads.filter(ad =>
+    favorites.includes(ad.id) && ad.status === "approved"
+  );
+
+  if (!list.length) {
+    container.innerHTML =
+      '<p class="empty">В избранном пока пусто.</p>';
+    return;
+  }
+
+  container.innerHTML = list.map(ad => `
+    <article class="product">
+      <img src="${safe(ad.photo)}" alt="Фото товара">
+      <div class="product-info">
+        <button class="heart" onclick="toggleFavorite('${safe(ad.id)}')">♥</button>
+        <div class="price">${Number(ad.price).toLocaleString("ru-RU")} ₸</div>
+        <b>${safe(ad.title)}</b>
+        <p class="muted">${safe(ad.city || "Есык")}</p>
+        <button onclick="sellerProfile('${safe(ad.seller)}')">Продавец</button>
+      </div>
+    </article>
+  `).join("");
+}
+
+function register(event) {
+  event.preventDefault();
+
+  const name = document.getElementById("regName").value.trim();
+  const phone = document.getElementById("regPhone").value.trim();
+  const password = document.getElementById("regPassword").value;
+  const role = document.getElementById("regRole").value;
+
+  if (users.some(user => user.name.toLowerCase() === name.toLowerCase())) {
+    alert("Такое имя уже занято.");
+    return;
+  }
+
+  users.push({
+    name,
+    phone,
+    password,
+    role,
+    city: "Есык",
+    bio: "",
+    avatar: ""
+  });
+
+  current = name;
+  saveData();
+  event.target.reset();
+  renderProfile();
+  alert("Регистрация прошла успешно!");
+}
+
+function login(event) {
+  event.preventDefault();
+
+  const name = document.getElementById("loginName").value.trim();
+  const password = document.getElementById("loginPassword").value;
+
+  const user = users.find(item =>
+    item.name.toLowerCase() === name.toLowerCase() &&
+    item.password === password
+  );
+
+  if (!user) {
+    alert("Неверное имя или пароль.");
+    return;
+  }
+
+  current = user.name;
+  saveData();
+  renderProfile();
+  alert("Ты вошёл в аккаунт!");
+}
+
+function logout() {
+  current = "";
+  saveData();
+  renderProfile();
+  openPage("home");
+}
+
+function renderProfile() {
+  const user = me();
+  const auth = document.getElementById("authForms");
+  const profile = document.getElementById("userProfile");
+
+  if (!user) {
+    auth.classList.remove("hidden");
+    profile.classList.add("hidden");
+    return;
+  }
+
+  auth.classList.add("hidden");
+  profile.classList.remove("hidden");
+
+  document.getElementById("profileName").textContent = user.name;
+  document.getElementById("profileRole").textContent =
+    user.role === "admin" ? "Администратор" :
+    user.role === "seller" ? "Продавец" : "Покупатель";
+
+  document.getElementById("profileCity").textContent =
+    user.city || "Есык";
+
+  document.getElementById("avatarPreview").src =
+    user.avatar || "https://placehold.co/100x100?text=User";
+
+  document.getElementById("editName").value = user.name;
+  document.getElementById("editCity").value = user.city || "Есык";
+  document.getElementById("editPhone").value = user.phone || "";
+  document.getElementById("editBio").value = user.bio || "";
+
+  const ownAds = ads.filter(ad => ad.seller === user.name);
+
+  document.getElementById("myAds").innerHTML = ownAds.length
+    ? ownAds.map(ad => `
+      <div class="card">
+        <b>${safe(ad.title)}</b>
+        <p>${Number(ad.price).toLocaleString("ru-RU")} ₸</p>
+        <span class="badge">${
+          ad.status === "approved" ? "Опубликовано" :
+          ad.status === "rejected" ? "Отклонено" : "На проверке"
+        }</span>
+        <button onclick="deleteAd('${safe(ad.id)}')">Удалить</button>
+      </div>
+    `).join("")
+    : '<p class="muted">У тебя пока нет объявлений.</p>';
+
+  const adminPanel = document.getElementById("adminPanel");
+
+  if (user.role === "admin") {
+    adminPanel.classList.remove("hidden");
+    renderModeration();
+  } else {
+    adminPanel.classList.add("hidden");
+  }
+}
+
+function updateAddForm() {
+  const user = me();
+  const notice = document.getElementById("addNotice");
+  const form = document.getElementById("adForm");
+
+  if (user && (user.role === "seller" || user.role === "admin")) {
+    notice.classList.add("hidden");
+    form.classList.remove("hidden");
+  } else {
+    notice.classList.remove("hidden");
+    form.classList.add("hidden");
+  }
+}
+
+function deleteAd(id) {
+  const user = me();
+  if (!user) return;
+
+  const ad = ads.find(item => item.id === id);
+  if (!ad) return;
+
+  if (ad.seller !== user.name && user.role !== "admin") return;
+
+  if (!confirm("Удалить объявление?")) return;
+
+  ads = ads.filter(item => item.id !== id);
+  favorites = favorites.filter(item => item !== id);
+  saveData();
+  renderProfile();
+  renderAds();
+  renderFavorites();
+}
+
+function sellerProfile(name) {
+  const seller = users.find(user => user.name === name);
+  const container = document.getElementById("sellerInfo");
+
+  if (!seller) {
+    alert("Продавец не найден.");
+    return;
+  }
+
+  const phone = (seller.phone || "").replace(/\D/g, "");
+
+  container.innerHTML = `
+    <div class="card">
+      <img class="avatar" src="${
+        safe(seller.avatar || "https://placehold.co/100x100?text=User")
+      }" alt="Аватар">
+      <h2>${safe(seller.name)}</h2>
+      <p>${safe(seller.city || "Есык")}</p>
+      <p>${safe(seller.bio || "Информация не указана")}</p>
+      ${
+        phone
+          ? `<a href="https://wa.me/${safe(phone)}" target="_blank">
+              <button>Написать в WhatsApp</button>
+            </a>`
+          : "<p>WhatsApp не указан.</p>"
+      }
+    </div>
+    <h3>Объявления продавца</h3>
+    <div class="products">
+      ${ads.filter(ad =>
+        ad.seller === seller.name && ad.status === "approved"
+      ).map(ad => `
+        <article class="product">
+          <img src="${safe(ad.photo)}" alt="Фото товара">
+          <div class="product-info">
+            <b>${safe(ad.title)}</b>
+            <p class="price">${Number(ad.price).toLocaleString("ru-RU")} ₸</p>
+          </div>
+        </article>
+      `).join("")}
+    </div>
+  `;
+
+  openPage("sellerPage");
+}
+
+function complain(id) {
+  const reason = prompt("Напиши причину жалобы:");
+
+  if (!reason || !reason.trim()) return;
+
+  reports.push({
+    id: makeId(),
+    adId: id,
+    reason: reason.trim(),
+    author: current || "Гость",
+    status: "new"
+  });
+
+  saveData();
+  alert("Жалоба отправлена на рассмотрение.");
+}
+
+function initApp() {
+  if (!users.some(user => user.name === "admin")) {
+    users.push({
+      name: "admin",
+      password: "admin123",
+      phone: "",
+      role: "admin",
+      city: "Есык",
+      bio: "Администратор",
+      avatar: ""
+    });
+  }
+
+  saveData();
+  renderAds();
+  renderFavorites();
+  renderProfile();
+  openPage("home");
+}
+
+initApp();
+</script>
+<script>
+function addAd(event) {
+  event.preventDefault();
+
+  const user = me();
+  if (!user || (user.role !== "seller" && user.role !== "admin")) {
+    alert("Размещать объявления могут только продавцы.");
+    return;
+  }
+
+  const title = document.getElementById("adTitle").value.trim();
+  const price = Number(document.getElementById("adPrice").value);
+  const category = document.getElementById("adCategory").value;
+  const description = document.getElementById("adDescription").value.trim();
+  const file = document.getElementById("adPhoto").files[0];
+
+  if (!file || !file.type.startsWith("image/")) {
+    alert("Выбери фотографию.");
+    return;
+  }
+
+  if (file.size > 2 * 1024 * 1024) {
+    alert("Фотография должна быть не больше 2 МБ.");
+    return;
+  }
+
+  if (!title || !description || price < 0 || !Number.isFinite(price)) {
+    alert("Проверь заполненные поля.");
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function () {
+    ads.push({
+      id: makeId(),
+      title,
+      price,
+      category,
+      description,
+      photo: reader.result,
+      seller: user.name,
+      city: user.city || "Есык",
+      status: "pending",
+      date: new Date().toISOString()
+    });
+
+    try {
+      saveData();
+      event.target.reset();
+      renderProfile();
+      renderAds();
+      alert("Объявление отправлено на модерацию!");
+      openPage("profile");
+    } catch (error) {
+      ads.pop();
+      alert("Не хватило места для хранения фотографии. Попробуй выбрать фото меньшего размера.");
+    }
+  };
+
+  reader.onerror = function () {
+    alert("Не удалось прочитать фотографию.");
+  };
+
+  reader.readAsDataURL(file);
+}
+
+function saveProfile(event) {
+  event.preventDefault();
+
+  const user = me();
+  if (!user) return;
+
+  const newName = document.getElementById("editName").value.trim();
+  const city = document.getElementById("editCity").value.trim();
+  const phone = document.getElementById("editPhone").value.trim();
+  const bio = document.getElementById("editBio").value.trim();
+  const file = document.getElementById("editAvatar").files[0];
+
+  if (!newName || !city || !phone) {
+    alert("Заполни обязательные поля.");
+    return;
+  }
+
+  if (users.some(item =>
+    item.name.toLowerCase() === newName.toLowerCase() &&
+    item.name !== user.name
+  )) {
+    alert("Это имя уже занято.");
+    return;
+  }
+
+  function finishSave(avatar) {
+    const oldName = user.name;
+
+    user.name = newName;
+    user.city = city;
+    user.phone = phone;
+    user.bio = bio;
+
+    if (avatar) user.avatar = avatar;
+
+    ads.forEach(ad => {
+      if (ad.seller === oldName) {
+        ad.seller = newName;
+        ad.city = city;
+      }
+    });
+
+    current = newName;
+
+    try {
+      saveData();
+      renderProfile();
+      renderAds();
+      alert("Профиль сохранён!");
+    } catch (error) {
+      alert("Не удалось сохранить данные. Возможно, закончилось место.");
+    }
+  }
+
+  if (file) {
+    if (!file.type.startsWith("image/")) {
+      alert("Выбери изображение.");
+      return;
+    }
+
+    if (file.size > 1024 * 1024) {
+      alert("Аватар должен быть не больше 1 МБ.");
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = () => finishSave(reader.result);
+    reader.onerror = () => alert("Ошибка загрузки аватара.");
+
+    reader.readAsDataURL(file);
+  } else {
+    finishSave(null);
+  }
+}
+
+function renderModeration() {
+  const user = me();
+  const container = document.getElementById("moderation");
+
+  if (!user || user.role !== "admin") {
+    container.innerHTML = "";
+    return;
+  }
+
+  const pending = ads.filter(ad => ad.status === "pending");
+  const newReports = reports.filter(report => report.status === "new");
+
+  let html = "<h4>Объявления на проверке</h4>";
+
+  if (!pending.length) {
+    html += '<p class="muted">Новых объявлений нет.</p>';
+  }
+
+  pending.forEach(ad => {
+    html += `
+      <div class="card">
+        <img src="${safe(ad.photo)}" alt="Фото" style="width:100%;max-height:180px;object-fit:contain">
+        <b>${safe(ad.title)}</b>
+        <p>${safe(ad.description)}</p>
+        <p>${Number(ad.price).toLocaleString("ru-RU")} ₸</p>
+        <p class="muted">Продавец: ${safe(ad.seller)}</p>
+        <button onclick="moderateAd('${safe(ad.id)}','approved')">
+          Одобрить
+        </button>
+        <button onclick="moderateAd('${safe(ad.id)}','rejected')">
+          Отклонить
+        </button>
+        <button onclick="moderateAd('${safe(ad.id)}','deleted')">
+          Удалить
+        </button>
+      </div>
+    `;
+  });
+
+  html += "<hr><h4>Жалобы пользователей</h4>";
+
+  if (!newReports.length) {
+    html += '<p class="muted">Новых жалоб нет.</p>';
+  }
+
+  newReports.forEach(report => {
+    const ad = ads.find(item => item.id === report.adId);
+
+    html += `
+      <div class="card">
+        <b>Жалоба</b>
+        <p>Причина: ${safe(report.reason)}</p>
+        <p>Автор: ${safe(report.author)}</p>
+        <p>Объявление: ${safe(ad ? ad.title : "Уже удалено")}</p>
+        <button onclick="resolveReport('${safe(report.id)}')">
+          Закрыть жалобу
+        </button>
+        ${
+          ad
+            ? `<button onclick="moderateAd('${safe(ad.id)}','deleted')">
+                Удалить объявление
+              </button>`
+            : ""
+        }
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+function moderateAd(id, status) {
+  const user = me();
+
+  if (!user || user.role !== "admin") {
+    alert("Нет доступа.");
+    return;
+  }
+
+  const ad = ads.find(item => item.id === id);
+  if (!ad) return;
+
+  if (status === "deleted") {
+    ads = ads.filter(item => item.id !== id);
+    favorites = favorites.filter(item => item !== id);
+  } else {
+    ad.status = status;
+  }
+
+  saveData();
+  renderModeration();
+  renderProfile();
+  renderAds();
+  renderFavorites();
+}
+
+function resolveReport(id) {
+  const user = me();
+
+  if (!user || user.role !== "admin") {
+    alert("Нет доступа.");
+    return;
+  }
+
+  const report = reports.find(item => item.id === id);
+  if (!report) return;
+
+  report.status = "resolved";
+
+  saveData();
+  renderModeration();
+
+  alert("Жалоба закрыта.");
+}
+</script>
 </body>
 </html>
-
+cd ~/NEURALIX
+cp index.html www/index.html
+termux-open index.html
