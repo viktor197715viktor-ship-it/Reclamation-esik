@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">NEURALIX</string>
+    <string name="title_activity_main">NEURALIX</string>
+    <string name="package_name">com.neuralix.app</string>
+    <string name="custom_url_scheme">com.neuralix.app</string>
+</resources>
