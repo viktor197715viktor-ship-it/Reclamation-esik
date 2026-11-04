@@ -11,7 +11,7 @@ jobs:
 
       - uses: supabase/setup-cli@v1
         with:
-          version: latest
+          version: 2.58.5
 
       - name: Link project
         run: supabase link --project-ref nrlhogwbpetegijeahfb
