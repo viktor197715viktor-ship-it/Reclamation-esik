@@ -22,7 +22,44 @@ input,textarea,select{width:100%;padding:12px;margin:7px 0 13px;border:1px solid
 .avatar{width:65px;height:65px;border-radius:50%;object-fit:cover;background:#eee}.empty{text-align:center;color:#888;padding:25px}.badge{display:inline-block;background:#f8e7e9;color:#a31b29;padding:5px 8px;border-radius:7px;font-size:11px}.hidden{display:none!important}
 .actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.actions button{flex:1}.chat-layout{display:grid;grid-template-columns:1fr;gap:10px}.chat-list{max-height:250px;overflow:auto}.chat-item{padding:11px;border-bottom:1px solid #eee;cursor:pointer}.chat-item.active{background:#fff0f1}.messages{min-height:160px;max-height:330px;overflow:auto;padding:8px;background:#f7f7f7;border-radius:10px}.msg{max-width:85%;padding:9px 11px;border-radius:12px;margin:7px 0;background:#fff;overflow-wrap:anywhere}.msg.mine{margin-left:auto;background:#f9dfe2}.msg small{display:block;color:#777;font-size:10px;margin-top:4px}
 @media(min-width:650px){.products{grid-template-columns:repeat(3,minmax(0,1fr))}.chat-layout{grid-template-columns:minmax(180px,.8fr) 1.5fr}.chat-list{max-height:430px}}
+
+.owner-dashboard{padding:4px 0 24px;color:#fff}
+.owner-header{min-height:125px;box-shadow:0 8px 25px #0005}
+.owner-header h2{font-weight:800;letter-spacing:.5px}
+.owner-crown{filter:drop-shadow(0 0 12px #e3263670)}
+.owner-welcome,.owner-stat{box-shadow:0 7px 20px #0002}
+.owner-stat{transition:transform .18s,border-color .18s}
+.owner-stat:active{transform:scale(.98);border-color:#e32636}
+.owner-menu button{min-height:58px;font-weight:700;transition:.18s}
+.owner-menu button:active{background:#381015;transform:scale(.98)}
+#ownerSectionContent{color:#fff}
+#ownerSectionContent .owner-stat{margin-top:12px}
+#ownerSectionContent input{width:100%;box-sizing:border-box;background:#111;color:#fff;border:1px solid #444;border-radius:10px;padding:13px;margin:10px 0}
+#ownerSectionContent input:focus{outline:none;border-color:#e32636}
+#ownerSectionContent p{color:#bbb;line-height:1.5}
+
 </style>
+
+<style>
+.owner-dashboard{display:grid;gap:16px}
+.owner-header{background:linear-gradient(120deg,#171717,#381015);border:1px solid #70232b;border-radius:18px;padding:20px;display:flex;justify-content:space-between;align-items:center;color:white}
+.owner-header small{color:#ff737d;letter-spacing:2px}
+.owner-header h2{margin:8px 0;font-size:24px}
+.owner-header p,.owner-welcome p{color:#aaa;margin:0}
+.owner-crown{font-size:48px;color:#e32636}
+.owner-welcome,.owner-stat{background:#1b1b1b;border:1px solid #333;border-radius:15px;padding:16px}
+.owner-label{font-size:11px;color:#ff626e;letter-spacing:1.5px}
+.owner-welcome h3{margin:8px 0}
+.owner-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.owner-stat span{display:block;color:#aaa;font-size:12px}
+.owner-stat b{display:block;font-size:24px;margin-top:8px}
+.owner-section-title{margin:8px 0 0}
+.owner-menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.owner-menu button{background:#202020;color:white;border:1px solid #393939;border-radius:12px;padding:15px 8px;text-align:left;font-size:13px}
+.owner-menu button:active{border-color:#e32636}
+@media(max-width:360px){.owner-stats{grid-template-columns:1fr}.owner-menu{grid-template-columns:1fr}}
+</style>
+
 </head>
 <body>
 <header><div class="top"><div class="logo">NEURALIX</div><div class="city" id="cityLabel">📍 Есык</div></div><div class="search"><span>⌕</span><input id="search" placeholder="Найти товар или услугу..." oninput="renderAds()"></div></header>
@@ -37,11 +74,15 @@ input,textarea,select{width:100%;padding:12px;margin:7px 0 13px;border:1px solid
 <form id="adForm" class="card hidden" onsubmit="addAd(event)"><label>Название товара</label><input id="adTitle" required maxlength="70"><label>Цена в тенге</label><input id="adPrice" type="number" min="0" required><label>Категория</label><select id="adCategory"><option>Телефоны</option><option>Техника</option><option>Авто</option><option>Недвижимость</option><option>Одежда</option><option>Услуги</option><option>Другое</option></select><label>Описание</label><textarea id="adDescription" required maxlength="1000"></textarea><label>Фотография (до 2 МБ)</label><input id="adPhoto" type="file" accept="image/*" required><button type="submit">Опубликовать объявление</button></form></section>
 <section id="chats" class="page"><h2>Сообщения</h2><p class="muted">Переписка между покупателями и продавцами.</p><div class="card chat-layout"><div><h3>Диалоги</h3><div id="chatList" class="chat-list"></div></div><div><div id="chatTitle"><p class="empty">Выбери диалог или напиши продавцу из объявления.</p></div><div id="messages" class="messages"></div><form id="messageForm" class="hidden" onsubmit="sendMessage(event)"><input id="messageText" placeholder="Написать сообщение..." maxlength="1000" required><button>Отправить</button></form></div></div></section>
 <section id="profile" class="page"><h2>Профиль</h2><div id="authForms">
-<div class="card"><h3>Регистрация</h3><form onsubmit="register(event)"><label>Имя пользователя</label><input id="regName" required maxlength="25"><label>Email</label><input id="regEmail" type="email" required><label>Номер WhatsApp</label><input id="regPhone" type="tel" placeholder="77001234567" required><label>Пароль (не менее 8 символов)</label><input id="regPassword" type="password" minlength="8" required><button>Зарегистрироваться</button></form><p class="muted">После регистрации может потребоваться подтверждение email.</p></div>
-<div class="card"><h3>Вход</h3><form onsubmit="login(event)"><label>Email</label><input id="loginEmail" type="email" required><label>Пароль</label><input id="loginPassword" type="password" required><button>Войти</button></form></div></div>
+<div class="row" style="gap:8px;margin-bottom:12px">
+<button type="button" id="showLogin" onclick="switchAuth('login')">Вход</button>
+<button type="button" id="showRegister" class="secondary" onclick="switchAuth('register')">Регистрация</button>
+</div>
+<div class="card" id="registerCard"><h3>Регистрация</h3><form onsubmit="register(event)"><label>Имя пользователя</label><input id="regName" required maxlength="25"><label>Email</label><input id="regEmail" type="email" required><label>Номер WhatsApp</label><input id="regPhone" type="tel" placeholder="77001234567" required><label>Пароль (не менее 8 символов)</label><input id="regPassword" type="password" minlength="8" required><button>Зарегистрироваться</button></form><p class="muted">После регистрации может потребоваться подтверждение email.</p></div>
+<div class="card hidden" id="loginCard"><h3>Вход</h3><form onsubmit="login(event)"><label>Email</label><input id="loginEmail" type="email" required><label>Пароль</label><input id="loginPassword" type="password" required><button>Войти</button></form></div></div>
 <div id="userProfile" class="hidden"><div class="card"><div class="row"><img id="avatarPreview" class="avatar" alt="Аватар"><div><h3 id="profileName"></h3><span id="profileRole" class="badge"></span><p id="profileCity" class="muted"></p></div></div></div>
 <div class="card"><h3>Редактировать профиль</h3><form onsubmit="saveProfile(event)"><label>Имя</label><input id="editName" required maxlength="25"><label>Город</label><input id="editCity" required maxlength="40"><label>WhatsApp</label><input id="editPhone" type="tel"><label>О себе</label><textarea id="editBio" maxlength="300"></textarea><button>Сохранить</button></form></div>
-<div class="card"><h3>Мои объявления</h3><div id="myAds"></div></div><div id="adminPanel" class="card hidden"><h3>Админ-панель</h3><div id="adminContent"></div></div><div id="ownerPanel" class="card hidden"><h3>Панель владельца</h3><div id="ownerContent"></div></div><button class="secondary" onclick="logout()">Выйти из аккаунта</button></div></section>
+<div class="card"><h3>Мои объявления</h3><div id="myAds"></div></div><div id="panelsAccess" class="card hidden"><h3>Служебные панели</h3><div id="panelButtons"></div><div id="panelLogin" class="hidden"><label>Пароль панели</label><input id="panelPassword" type="password"><button onclick="verifyPanelAccess()">Войти в панель</button></div><div id="panelResult"></div></div><div id="adminPanel" class="card hidden"><h3>Админ-панель</h3><div id="adminContent"></div></div><div id="ownerPanel" class="card hidden"><h3>Панель владельца</h3><div id="ownerContent"></div></div><button class="secondary" onclick="logout()">Выйти из аккаунта</button></div></section>
 <section id="sellerPage" class="page"><button class="secondary" onclick="openPage('home')">← Назад</button><div id="sellerInfo"></div></section>
 </main>
 <nav class="bottom"><button id="nav-home" class="selected" onclick="openPage('home')"><span>🏠</span>Главная</button><button id="nav-favorites" onclick="openPage('favorites')"><span>♥</span>Избранное</button><button id="nav-add" onclick="openPage('add')"><span>＋</span>Добавить</button><button id="nav-chats" onclick="openPage('chats')"><span>💬</span>Чаты</button><button id="nav-profile" onclick="openPage('profile')"><span>👤</span>Профиль</button></nav>
@@ -100,6 +141,13 @@ async function toggleFavorite(id){
 }
 function renderFavorites(){
  const list=ads.filter(a=>favorites.includes(a.id));$("favoriteAds").innerHTML=list.length?list.map(a=>`<article class="product"><img src="${esc(a.photo||"https://placehold.co/400x300")}"><div class="product-info"><b>${esc(a.title)}</b><div class="price">${Number(a.price).toLocaleString("ru-RU")} ₸</div><button onclick="startChat('${a.user_id}','${a.id}')">Написать продавцу</button></div></article>`).join(""):'<p class="empty">В избранном пока пусто.</p>';
+}
+function switchAuth(mode){
+ const login=mode==="login";
+ $("loginCard").classList.toggle("hidden",!login);
+ $("registerCard").classList.toggle("hidden",login);
+ $("showLogin").classList.toggle("secondary",!login);
+ $("showRegister").classList.toggle("secondary",login);
 }
 async function register(e){
  e.preventDefault();const name=$("regName").value.trim(),email=$("regEmail").value.trim(),phone=$("regPhone").value.trim(),password=$("regPassword").value;
@@ -181,7 +229,356 @@ function renderAdmin(){
  $("adminContent").innerHTML=`<p class="muted">Администратор может просматривать объявления и жалобы. Управление ролями и блокировками выполняется только защищённой серверной функцией.</p><h3>Объявления</h3>${ads.map(a=>`<div class="card"><b>${esc(a.title)}</b><p class="muted">${esc(a.category)} · ${Number(a.price).toLocaleString("ru-RU")} ₸</p></div>`).join("")||"Нет объявлений"}`;
 }
 function renderOwner(){
- $("ownerContent").innerHTML=`<p><b>${profile.role==="main_owner"?"Главный владелец":"Владелец"}</b></p><p class="muted">Роль владельца нельзя менять из браузера. Назначение второго владельца, блокировки и снятие прав должны выполняться через защищённую функцию Supabase с проверкой полномочий.</p><div class="stat-grid"><div class="card">Профиль: ${esc(profile.name||"")}</div><div class="card">Объявлений: ${ads.length}</div></div>`;
+ const isMain = profile.role === "main_owner";
+ $("ownerContent").innerHTML = `
+ <div class="owner-dashboard">
+   <div class="owner-header">
+     <div>
+       <small>NEURALIX CONTROL CENTER</small>
+       <h2>OWNER CONTROL</h2>
+       <p>Управление маркетплейсом</p>
+     </div>
+     <span class="owner-crown">♛</span>
+   </div>
+
+   <div class="owner-welcome">
+     <span class="owner-label">${isMain ? "ГЛАВНЫЙ ВЛАДЕЛЕЦ" : "ВЛАДЕЛЕЦ"}</span>
+     <h3>${esc(profile.name || "Владелец")}</h3>
+     <p>Панель управления NEURALIX</p>
+   </div>
+
+   <div class="owner-stats">
+     <div class="owner-stat"><span>Пользователи</span><b>${profiles.length}</b></div>
+     <div class="owner-stat"><span>Объявления</span><b>${ads.length}</b></div>
+     <div class="owner-stat"><span>Жалобы</span><b>${reports.length}</b></div>
+   </div>
+
+   <h3 class="owner-section-title">Управление</h3>
+   <div class="owner-menu">
+     <button onclick="ownerSection('users')">👥 Пользователи</button>
+     <button onclick="ownerSection('roles')">🛡️ Управление ролями</button>
+     <button onclick="ownerSection('owners')">♛ Владельцы</button>
+     <button onclick="ownerSection('reports')">⚑ Жалобы</button>
+     <button onclick="ownerSection('ads')">▣ Объявления</button>
+     <button onclick="ownerSection('settings')">⚙ Настройки</button>
+     <button onclick="ownerSection('maintenance')">🔧 Технические работы</button>
+   </div>
+   
+   <div class="owner-stat" style="margin-top:15px">
+     <h3>⌨️ Быстрые команды</h3>
+     <div class="owner-menu">
+       <button onclick="ownerCommand('users')">👥 /users</button>
+       <button onclick="ownerCommand('admins')">🛡️ /admins</button>
+       <button onclick="ownerCommand('setadmin')">➕ /setadmin</button>
+       <button onclick="ownerCommand('removeadmin')">➖ /removeadmin</button>
+       <button onclick="ownerCommand('block')">🚫 /block</button>
+       <button onclick="ownerCommand('unblock')">✅ /unblock</button>
+       <button onclick="ownerCommand('owners')">♛ /owners</button>
+       <button onclick="ownerCommand('reports')">⚑ /reports</button>
+       <button onclick="ownerCommand('ads')">📦 /ads</button>
+       <button onclick="ownerCommand('maintenance_on')">🔴 /maintenance_on</button>
+       <button onclick="ownerCommand('maintenance_off')">🟢 /maintenance_off</button>
+       <button onclick="ownerCommand('stats')">📊 /stats</button>
+     </div>
+   </div>
+   <div id="ownerSectionContent"></div>
+ </div>`;
+}
+
+
+function filterOwnerUsers(){
+ const input = $("ownerUserSearch");
+ const list = $("ownerUsersList");
+ if(!input || !list) return;
+
+ const q = input.value.trim().toLowerCase();
+ const found = profiles.filter(u =>
+   String(u.name||"").toLowerCase().includes(q) ||
+   String(u.phone||"").toLowerCase().includes(q)
+ );
+
+ list.innerHTML = found.map(u => `
+  <div class="owner-stat" style="margin-top:10px">
+   <b>${esc(u.name || "Без имени")}</b>
+   <p>${esc(u.phone || "Телефон не указан")}</p>
+   <p>Роль: ${esc(roleName(u.role))}</p>
+   <p>Статус: ${u.blocked ? "Заблокирован" : "Активен"}</p>
+  </div>
+ `).join("") || "<p>Пользователи не найдены.</p>";
+}
+
+
+function ownerCommand(command){
+ const routes = {
+  users:"users", admins:"roles", setadmin:"roles",
+  removeadmin:"roles", block:"users", unblock:"users",
+  owners:"owners", reports:"reports", ads:"ads",
+  maintenance_on:"maintenance", maintenance_off:"maintenance",
+  stats:"stats"
+ };
+ if(!routes[command]) return;
+ ownerSection(routes[command]);
+}
+
+
+function previewMaintenance(){
+ const toggle = $("maintenanceToggle");
+ const message = $("maintenanceMessage");
+ const preview = $("maintenancePreview");
+ if(!toggle || !message || !preview) return;
+ preview.innerHTML = toggle.checked
+   ? '<div class="owner-stat"><h3>🔧 Технические работы</h3><p>'+esc(message.value)+'</p></div>'
+   : '<p>Режим технических работ выключен.</p>';
+}
+
+
+function ownerBlockScreen(){
+ const el = $("ownerSectionContent");
+ if(!el) return;
+ el.innerHTML = `
+  <div class="owner-stat">
+   <h3>🚫 Блокировка пользователей</h3>
+   <input id="ownerBlockSearch" placeholder="Имя или телефон" oninput="filterOwnerBlockUsers()" style="width:100%;box-sizing:border-box;padding:12px;border-radius:10px">
+   <div id="ownerBlockList"></div>
+   <p style="color:#ff737d;font-size:12px">Демонстрационный экран. Реальная блокировка требует серверной проверки.</p>
+  </div>`;
+ filterOwnerBlockUsers();
+}
+function filterOwnerBlockUsers(){
+ const q = ($("ownerBlockSearch")?.value || "").trim().toLowerCase();
+ const list = $("ownerBlockList");
+ if(!list) return;
+ const found = profiles.filter(u =>
+  String(u.name||"").toLowerCase().includes(q) ||
+  String(u.phone||"").toLowerCase().includes(q)
+ );
+ list.innerHTML = found.map(u => `
+  <div class="owner-stat" style="margin-top:10px">
+   <b>${esc(u.name || "Без имени")}</b>
+   <p>${esc(u.phone || "Телефон не указан")}</p>
+   <p>Статус: ${u.blocked ? "Заблокирован" : "Активен"}</p>
+  </div>`).join("") || "<p>Пользователи не найдены.</p>";
+}
+
+
+function ownerRolesScreen(){
+ const el = $("ownerSectionContent");
+ if(!el) return;
+ el.innerHTML = `
+  <div class="owner-stat">
+   <h3>🛡️ Управление ролями</h3>
+   <input id="ownerRoleSearch" placeholder="Поиск по имени или телефону" oninput="filterOwnerRoles()" style="width:100%;box-sizing:border-box;padding:12px;border-radius:10px">
+   <div id="ownerRoleList"></div>
+   <p style="color:#ff737d;font-size:12px">Изменение ролей пока демонстрационное. Реальные права выдаются только через защищённый сервер.</p>
+  </div>`;
+ filterOwnerRoles();
+}
+function filterOwnerRoles(){
+ const q = ($("ownerRoleSearch")?.value || "").trim().toLowerCase();
+ const list = $("ownerRoleList");
+ if(!list) return;
+ const found = profiles.filter(u =>
+  String(u.name||"").toLowerCase().includes(q) ||
+  String(u.phone||"").toLowerCase().includes(q)
+ );
+ list.innerHTML = found.map(u => `
+  <div class="owner-stat" style="margin-top:10px">
+   <b>${esc(u.name || "Без имени")}</b>
+   <p>${esc(u.phone || "Телефон не указан")}</p>
+   <p>Текущая роль: ${esc(roleName(u.role))}</p>
+  </div>`).join("") || "<p>Пользователи не найдены.</p>";
+}
+
+
+function ownerOwnersScreen(){
+ const el = $("ownerSectionContent");
+ if(!el) return;
+ const owners = profiles.filter(u =>
+  ["main_owner","owner"].includes(u.role)
+ );
+ el.innerHTML = `
+  <div class="owner-stat">
+   <h3>♛ Владельцы NEURALIX</h3>
+   <p>Всего владельцев: ${owners.length}</p>
+   <div id="ownerOwnersList"></div>
+   <p style="color:#ff737d;font-size:12px">
+    Назначение и ограничение прав будет подключено через защищённый сервер.
+   </p>
+  </div>`;
+ $("ownerOwnersList").innerHTML = owners.map(u => `
+  <div class="owner-stat" style="margin-top:10px">
+   <b>♛ ${esc(u.name || "Без имени")}</b>
+   <p>${esc(u.phone || "Телефон не указан")}</p>
+   <p>${esc(roleName(u.role))}</p>
+  </div>
+ `).join("") || "<p>Владельцы не найдены.</p>";
+}
+
+
+function ownerReportsScreen(){
+ const el = $("ownerSectionContent");
+ if(!el) return;
+ el.innerHTML = `
+  <div class="owner-stat">
+   <h3>⚑ Жалобы</h3>
+   <p>Всего загружено: ${reports.length}</p>
+   <input id="ownerReportSearch" placeholder="Поиск по жалобам" oninput="filterOwnerReports()" style="width:100%;box-sizing:border-box;padding:12px;border-radius:10px">
+   <div id="ownerReportsList"></div>
+   <p style="color:#ff737d;font-size:12px">Для реального списка нужно подключить загрузку жалоб из базы.</p>
+  </div>`;
+ filterOwnerReports();
+}
+function filterOwnerReports(){
+ const q = ($("ownerReportSearch")?.value || "").trim().toLowerCase();
+ const list = $("ownerReportsList");
+ if(!list) return;
+ const found = reports.filter(r =>
+  [r.reason,r.message,r.status,r.id].some(v =>
+   String(v||"").toLowerCase().includes(q)
+  )
+ );
+ list.innerHTML = found.map(r => `
+  <div class="owner-stat" style="margin-top:10px">
+   <b>Жалоба #${esc(r.id || "—")}</b>
+   <p>${esc(r.reason || r.message || "Без описания")}</p>
+   <p>Статус: ${esc(r.status || "Новая")}</p>
+  </div>
+ `).join("") || "<p>Жалоб пока нет или они ещё не загружены.</p>";
+}
+
+
+function ownerAdsScreen(){
+ const el = $("ownerSectionContent");
+ if(!el) return;
+ el.innerHTML = `
+  <div class="owner-stat">
+   <h3>▣ Объявления</h3>
+   <p>Всего загружено: ${ads.length}</p>
+   <input id="ownerAdsSearch" placeholder="Поиск по названию или описанию" oninput="filterOwnerAds()" style="width:100%;box-sizing:border-box;padding:12px;border-radius:10px">
+   <div id="ownerAdsList"></div>
+  </div>`;
+ filterOwnerAds();
+}
+function filterOwnerAds(){
+ const q = ($("ownerAdsSearch")?.value || "").trim().toLowerCase();
+ const list = $("ownerAdsList");
+ if(!list) return;
+ const found = ads.filter(a =>
+  [a.title,a.description,a.city,a.category].some(v =>
+   String(v||"").toLowerCase().includes(q)
+  )
+ );
+ list.innerHTML = found.map(a => `
+  <div class="owner-stat" style="margin-top:10px">
+   <b>${esc(a.title || "Без названия")}</b>
+   <p>${esc(a.city || "Город не указан")} · ${esc(a.category || "Без категории")}</p>
+   <p>Цена: ${esc(a.price || "Не указана")}</p>
+   <p>Статус: ${esc(a.status || "Неизвестен")}</p>
+  </div>
+ `).join("") || "<p>Объявления не найдены.</p>";
+}
+
+
+function ownerSettingsScreen(){
+ const el = $("ownerSectionContent");
+ if(!el) return;
+ el.innerHTML = `
+  <div class="owner-stat">
+   <h3>⚙️ Настройки панели</h3>
+   <p>Приложение: NEURALIX</p>
+   <p>Версия панели: 1.0</p>
+   <p>Аккаунт: ${esc(profile?.name || "Владелец")}</p>
+   <p>Роль: ${esc(roleName(profile?.role))}</p>
+   <button onclick="refreshOwnerData()" style="margin-top:12px">
+    🔄 Обновить данные
+   </button>
+   <p id="ownerRefreshStatus"></p>
+  </div>`;
+}
+async function refreshOwnerData(){
+ const status = $("ownerRefreshStatus");
+ if(status) status.textContent = "Обновление...";
+ try{
+  await loadAds();
+  renderOwner();
+  ownerSettingsScreen();
+  const result = $("ownerRefreshStatus");
+  if(result) result.textContent = "Данные обновлены.";
+ }catch(error){
+  if(status) status.textContent = "Не удалось обновить данные.";
+  console.error(error);
+ }
+}
+
+function ownerSection(section){
+ const el = $("ownerSectionContent");
+ if(!el) return;
+ const sections = {
+  users: ["Пользователи", "Список аккаунтов"],
+  roles: ["Управление ролями", "Изменение ролей будет доступно после подключения серверной проверки полномочий."],
+  owners: ["Владельцы", "Назначение второго владельца и ограничение его прав."],
+  reports: ["Жалобы", reports.length ? "Количество жалоб: " + reports.length : "Новых жалоб пока нет."],
+  ads: ["Объявления", "Всего объявлений: " + ads.length],
+  settings: ["Настройки", "Настройки панели владельца."],
+  stats: ["Статистика", "Пользователей: " + profiles.length + " · Объявлений: " + ads.length],
+  maintenance: ["Технические работы", "Управление режимом технических работ."]
+ };
+ const item = sections[section];
+ if(!item) return;
+
+ if(section === "block" || section === "unblock"){
+   ownerBlockScreen();
+   return;
+ }
+ if(section === "roles"){
+   ownerRolesScreen();
+   return;
+ }
+ if(section === "owners"){
+   ownerOwnersScreen();
+   return;
+ }
+ if(section === "reports"){
+   ownerReportsScreen();
+   return;
+ }
+ if(section === "ads"){
+   ownerAdsScreen();
+   return;
+ }
+ if(section === "settings"){
+   ownerSettingsScreen();
+   return;
+ }
+ if(section === "users"){
+   el.innerHTML = `
+    <div class="owner-stat">
+      <h3>Пользователи (${profiles.length})</h3>
+      <input id="ownerUserSearch" placeholder="Поиск по имени или телефону" oninput="filterOwnerUsers()">
+      <div id="ownerUsersList"></div>
+    </div>`;
+   filterOwnerUsers();
+   return;
+ }
+
+
+ if(section === "maintenance"){
+   el.innerHTML = `
+    <div class="owner-stat">
+      <h3>🔧 Технические работы</h3>
+      <p>Настройка внешнего экрана технических работ.</p>
+      <label style="display:flex;gap:10px;align-items:center;margin:16px 0">
+        <input id="maintenanceToggle" type="checkbox" style="width:22px;height:22px">
+        Включить режим технических работ
+      </label>
+      <p>Сообщение пользователям</p>
+      <input id="maintenanceMessage" value="NEURALIX временно недоступен. Проводятся технические работы." style="width:100%;box-sizing:border-box;padding:12px;border-radius:10px">
+      <button class="danger" onclick="previewMaintenance()">Предпросмотр</button>
+      <div id="maintenancePreview" style="margin-top:12px"></div>
+    </div>`;
+   return;
+ }
+ el.innerHTML = '<div class="owner-stat"><h3>'+item[0]+'</h3><p>'+item[1]+'</p></div>';
 }
 init();
 </script>
